@@ -1,0 +1,6 @@
+@PluginFramework_VectoDigital_HostAddress = http://localhost:5268
+
+GET {{PluginFramework_VectoDigital_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

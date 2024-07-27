@@ -1,0 +1,63 @@
+[
+	{
+		"Id": 1342,
+		"Amount": 500000,
+		"CountOfMonth": 12,
+		"Percent": 10.5,
+		"Borrower": {
+			"Id": 12,
+			"FirstName": "Alex",
+			"LastName": "Smith",
+			"DateOfBirth": "10/03/2000",
+			"PaasportNumber": "1234567890"
+		},
+		"Bank": {
+			"Id": 123,
+			"Name": "Bank #1",
+			"Address": "London, Coulson St, 5"
+		},
+		"CarBrand": "Nissan",
+		"CarModel": "Almera",
+		"VIN": "WBAZZZ8A9KA123456"
+	},
+	{
+		"Id": 23634,
+		"Amount": 2000000,
+		"CountOfMonth": 36,
+		"Percent": 8,
+		"Borrower": {
+			"Id": 23,
+			"FirstName": "Sam",
+			"LastName": "Green",
+			"DateOfBirth": "19/11/1972",
+			"PaasportNumber": "12344827890"
+		},
+		"Bank": {
+			"Id": 1234,
+			"Name": "Digital Bank",
+			"Address": "London, Elystan St, 51"
+		},
+		"AddressOfObject": "London, Markham St, 2",
+		"Square": 143.5
+	},
+	{
+		"Id": 24245,
+		"Amount": 300000,
+		"CountOfMonth": 6,
+		"Percent": 10,
+		"Borrower": {
+			"Id": 7,
+			"FirstName": "Jack",
+			"LastName": "Li",
+			"DateOfBirth": "01/07/1995",
+			"PaasportNumber": "12344827890"
+		},
+		"Bank": {
+			"Id": 123,
+			"Name": "Bank #1",
+			"Address": "London, Coulson St, 5"
+		},
+		"UniversityName": "University of London",
+		"UniversityAddress": "London, Malete St, WC1E 7HU"
+	}
+]
