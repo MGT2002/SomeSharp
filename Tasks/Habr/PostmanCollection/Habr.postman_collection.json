@@ -1,0 +1,459 @@
+{
+	"info": {
+		"_postman_id": "4a5776c6-f148-4982-ba64-6b3a5fcf205a",
+		"name": "Habr",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37305295"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"examplePassword\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7095/api/authentication/register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"authentication",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"examplePassword\"\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7095/api/authentication/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"authentication",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "GetUserPosts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer @token"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:7095/api/posts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserDrafts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer @token"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:7095/api/posts/drafts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"posts",
+								"drafts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPublishedPosts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer @token"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:7095/api/posts/published",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"posts",
+								"published"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPostDetails",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer @token"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:7095/api/posts/{{id}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"posts",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPublishedPostWithComments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer @token"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:7095/api/posts/{{id}}/publishedPostWithComments",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"posts",
+								"{{id}}",
+								"publishedPostWithComments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddPost",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer @token"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"exampleTitle\",\n    \"content\": \"exampleContent\"\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7095/api/posts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdatePost",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer @token"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"title\": \"updatedTitle\",\n    \"content\": \"updatedContent\"\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7095/api/posts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MoveToDrafts",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer @token"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:7095/api/posts/{{id}}/moveToDrafts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"posts",
+								"{{id}}",
+								"moveToDrafts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PublishPost",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer @token"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:7095/api/posts/{{id}}/publish",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"posts",
+								"{{id}}",
+								"publish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeletePost",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer @token"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:7095/api/posts/{{id}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"posts",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "WriteCommentToDeclaration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer @token"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"postId\": 1,\n    \"content\": \"exampleContent\"\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7095/api/comments",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteComment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer @token"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:7095/api/comments/{{id}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7095",
+							"path": [
+								"api",
+								"comments",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
