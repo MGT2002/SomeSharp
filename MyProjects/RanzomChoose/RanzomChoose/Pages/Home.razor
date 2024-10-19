@@ -1,0 +1,69 @@
+﻿@page "/"
+@inject HttpClient Http
+
+<h3 class="text-center my-4">Random Name Picker</h3>
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <input type="text" placeholder="Enter a name" @bind="newName" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <button @onclick="AddName" class="btn btn-primary w-100">Add Name</button>
+        </div>
+    </div>
+
+    <ul class="list-group mb-3">
+        @foreach (var name in names)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                @name
+                <button @onclick="() => RemoveName(name)" class="btn btn-danger btn-sm">X</button>
+            </li>
+        }
+    </ul>
+
+    <button @onclick="ChooseRandomName" class="btn btn-success w-100">Choose</button>
+
+    @if (!string.IsNullOrEmpty(selectedName))
+    {
+        <div class="alert alert-info text-center mt-3">
+            You chose: <strong>@selectedName</strong>
+        </div>
+    }
+</div>
+
+@code {
+    private List<string> names = new List<string>();
+    private string? newName;
+    private string? selectedName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        string path = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Games.json");
+        names = await Http.GetFromJsonAsync<List<string>>(path) ?? throw new NullReferenceException(path);
+    }
+
+    private void AddName()
+    {
+        if (!string.IsNullOrWhiteSpace(newName))
+        {
+            names.Add(newName);
+            newName = string.Empty;  // Clear the input after adding
+        }
+    }
+
+    private void RemoveName(string name)
+    {
+        names.Remove(name);  // Remove the selected name
+    }
+
+    private void ChooseRandomName()
+    {
+        if (names.Count > 0)
+        {
+            var random = new Random();
+            selectedName = names[random.Next(names.Count)];
+        }
+    }
+}
