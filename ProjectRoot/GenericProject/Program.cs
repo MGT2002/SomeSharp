@@ -14,7 +14,9 @@ var person = new Person
     Child = new() { Name = "Child", Age = 12, Email = "Child@Cm.com" }
 };
 
-var copy = (Person)person.Clone();
+person.people.AddRange([200, 100]);
+
+var copy = (Person)person.DeepCopy();
 
 Print(person, copy);
 Console.WriteLine(new string('_', 50));
@@ -24,11 +26,15 @@ Print(person, copy);
 
 static void Print(Person person, Person copy)
 {
+    Console.WriteLine("Person Start!");
     Console.WriteLine(person);
+    Console.WriteLine("Person End!");
+    Console.WriteLine("Copy Start!");
     Console.WriteLine(copy);
+    Console.WriteLine("Copy End!");
 }
 
-public class Person : ICloneable
+public class Person
 {
     public string Name { get; set; } = "";
     [JsonIgnore]
@@ -37,33 +43,79 @@ public class Person : ICloneable
     [JsonIgnore]
     public Person? Child { get; set; }
     [JsonIgnore]
-    public List<Person> people = [];
+    public List<int> people = [];
 
     public override string ToString()
     {
-        return $"{{Name={Name}, Age={Age}, Email={Email}" +
-            $"\nChild={Child?.ToString() ?? "null"}}}";
-    }
+        string peopleText = "people: [\n";
+        foreach (var i in people)
+        {
+            peopleText += i.ToString();
+            peopleText += "\n";
+        }
+        peopleText += "]";
 
-    public object Clone()
-    {
-        var clone = this.DeepCopy();
-        clone.Child = this.Child.DeepCopy();
-        clone.people = this.people.DeepCopy();
-        clone.Age = this.Age.DeepCopy();
-
-        return clone;
+        return $"{{\nName={Name}, Age={Age}, Email={Email}" +
+            $"\nChild={Child?.ToString() ?? "null"}\n{peopleText}\n}}";
     }
 }
 
 public static class DeepCopyExtension
 {
-    public static T DeepCopy<T>(this T source)
+    public static object DeepCopy(this object source)
     {
-        var json = JsonSerializer.Serialize(source);
-        var copy = JsonSerializer.Deserialize<T>(json)!;
+        var copy = source.CallMemberwiseClone();
+
+        var refFields = copy.GetReferenceFieldsWithoutStrings();
+        for (int i = 0; i < refFields.Length; i++)
+        {
+            var value = refFields[i].GetValue(copy);
+            if (value is null)
+            {
+                continue;
+            }
+            if (value is IEnumerable)
+            {
+                value = value.CopyWithJsonSerializer();
+            }
+            else
+            {
+                value = value.DeepCopy();
+            }
+
+            refFields[i].SetValue(copy, value);
+        }
 
         return copy;
+    }
+
+    private static FieldInfo[] GetReferenceFieldsWithoutStrings(this object obj)
+    {
+        Type type = obj.GetType();
+
+        FieldInfo[] allFields = type.GetFields(BindingFlags.Instance
+            | BindingFlags.NonPublic
+            | BindingFlags.Public);
+
+        return Array.FindAll(allFields, field => !field.FieldType.IsValueType && field.FieldType != typeof(string));
+    }
+
+    private static object CallMemberwiseClone(this object obj)
+    {
+        Type type = obj.GetType();
+
+        MethodInfo? memberwiseCloneMethod = type.GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        if (memberwiseCloneMethod == null)
+            throw new InvalidOperationException("The method MemberwiseClone is not available.");
+
+        // Invoke the method on the object and return the result
+        return memberwiseCloneMethod.Invoke(obj, null)!;
+    }
+
+    private static object CopyWithJsonSerializer(this object obj)
+    {
+        return JsonSerializer.Deserialize(JsonSerializer.Serialize(obj), returnType: obj.GetType())!;
     }
 }
 
