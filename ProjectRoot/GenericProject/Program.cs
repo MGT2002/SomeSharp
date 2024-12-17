@@ -1,10 +1,5 @@
-﻿using System.Collections;
-using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text.Json;
-using System.Linq;
+﻿using GenericProject;
 using System.Text.Json.Serialization;
-using System.Net.Http.Json;
 
 var person = new Person
 {
@@ -21,7 +16,7 @@ var copy = (Person)person.DeepCopy();
 Print(person, copy);
 Console.WriteLine(new string('_', 50));
 copy.Email = default!;
-copy.Child.Name = "adsadsd";
+copy.Child!.Name = "adsadsd";
 Print(person, copy);
 
 static void Print(Person person, Person copy)
@@ -59,63 +54,3 @@ public class Person
             $"\nChild={Child?.ToString() ?? "null"}\n{peopleText}\n}}";
     }
 }
-
-public static class DeepCopyExtension
-{
-    public static object DeepCopy(this object source)
-    {
-        var copy = source.CallMemberwiseClone();
-
-        var refFields = copy.GetReferenceFieldsWithoutStrings();
-        for (int i = 0; i < refFields.Length; i++)
-        {
-            var value = refFields[i].GetValue(copy);
-            if (value is null)
-            {
-                continue;
-            }
-            if (value is IEnumerable)
-            {
-                value = value.CopyWithJsonSerializer();
-            }
-            else
-            {
-                value = value.DeepCopy();
-            }
-
-            refFields[i].SetValue(copy, value);
-        }
-
-        return copy;
-    }
-
-    private static FieldInfo[] GetReferenceFieldsWithoutStrings(this object obj)
-    {
-        Type type = obj.GetType();
-
-        FieldInfo[] allFields = type.GetFields(BindingFlags.Instance
-            | BindingFlags.NonPublic
-            | BindingFlags.Public);
-
-        return Array.FindAll(allFields, field => !field.FieldType.IsValueType && field.FieldType != typeof(string));
-    }
-
-    private static object CallMemberwiseClone(this object obj)
-    {
-        Type type = obj.GetType();
-
-        MethodInfo? memberwiseCloneMethod = type.GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic);
-
-        if (memberwiseCloneMethod == null)
-            throw new InvalidOperationException("The method MemberwiseClone is not available.");
-
-        // Invoke the method on the object and return the result
-        return memberwiseCloneMethod.Invoke(obj, null)!;
-    }
-
-    private static object CopyWithJsonSerializer(this object obj)
-    {
-        return JsonSerializer.Deserialize(JsonSerializer.Serialize(obj), returnType: obj.GetType())!;
-    }
-}
-
