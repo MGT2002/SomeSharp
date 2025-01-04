@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Core.DTOs;
+using Core.Entities;
 using Core.Interfaces;
 using Core.Scenes;
 
@@ -8,14 +9,16 @@ public class DreamWorldGameManager(IServiceProvider serviceProvider) : IGameMana
 {
     private readonly IServiceProvider serviceProvider = serviceProvider;
     private Scene currentScene = null!;
+    private PlayerState playerState = new("Player", 1, 100);
+    private PlayerInventory playerInventory = new([new() { Name = "Hope", Description = "Unique Item" }]);
 
-    public GameState GetCurrentState() => currentScene.GetCurrentState();
-    public GameState GetNextState(PlayerAction playerAction) => currentScene.GetNextState(playerAction);
+    public GameStateDTO GetCurrentState() => new(currentScene.GetCurrentState(), playerState);
+    public GameStateDTO GetNextState(int playerAction) => new(currentScene.GetNextState(playerAction), playerState);
 
-    public void StartNewGame()
+    public async Task StartNewGame()
     {
         currentScene = new GameStartScene(serviceProvider);
-        currentScene.Initialize();
+        await currentScene.Initialize(playerState, playerInventory);
     }
 
     public void LoadGame(uint slot)
@@ -24,6 +27,11 @@ public class DreamWorldGameManager(IServiceProvider serviceProvider) : IGameMana
     }
 
     public void SaveGame(uint slot)
+    {
+        throw new NotImplementedException();
+    }
+
+    public PlayerInventory GetPlayerInventory()
     {
         throw new NotImplementedException();
     }

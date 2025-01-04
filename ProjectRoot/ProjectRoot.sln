@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35431.28
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{86A3B3D3-4575-4107-BD0E-6568EC8672EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{86A3B3D3-4575-4107-BD0E-6568EC8672EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentation\Presentation.csproj", "{4F4233E9-781A-44AB-B556-453BD911A6E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Presentation\Presentation.csproj", "{4F4233E9-781A-44AB-B556-453BD911A6E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonInfrastructure", "JsonInfrastructure\JsonInfrastructure.csproj", "{0B9D68CC-2EFD-41EF-A434-C51DD9BF41A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4F4233E9-781A-44AB-B556-453BD911A6E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F4233E9-781A-44AB-B556-453BD911A6E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F4233E9-781A-44AB-B556-453BD911A6E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B9D68CC-2EFD-41EF-A434-C51DD9BF41A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B9D68CC-2EFD-41EF-A434-C51DD9BF41A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B9D68CC-2EFD-41EF-A434-C51DD9BF41A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B9D68CC-2EFD-41EF-A434-C51DD9BF41A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

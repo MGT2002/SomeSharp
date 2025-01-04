@@ -4,5 +4,5 @@ namespace Core.Repositories;
 
 public interface ISceneRepository
 {
-    IEnumerable<GameState> GetScene(string sceneName);
+    Task<IEnumerable<GameState>> GetScene(string sceneName);
 }

@@ -1,7 +1,29 @@
 ﻿@page "/"
+@inject IGameManager GameManager
 
 <PageTitle>Home</PageTitle>
-
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+@if(isDataLoaded)
+{
+    <h2>
+        @GameManager.GetCurrentState().CurrentContext
+    </h2>
+    @foreach (var i in GameManager.GetCurrentState().PlayerActionOptions)
+    {
+        @i
+        <br/>
+    }
+}
+
+@code
+{
+    private bool isDataLoaded = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GameManager.StartNewGame();
+
+        isDataLoaded = true;
+    }
+}

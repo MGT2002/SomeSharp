@@ -1,0 +1,26 @@
+﻿[
+  {
+    "Id": 1,
+    "CurrentContext": "Start of the game",
+    "Type": {
+      "Name": "Dialog",
+      "Value": 1
+    },
+    "PlayerAction": {
+      "Options": [ "Next" ],
+      "CorrespondingGameStateIds": [ 2 ]
+    }
+  },
+  {
+    "Id": 2,
+    "CurrentContext": "2",
+    "Type": {
+      "Name": "Dialog",
+      "Value": 1
+    },
+    "PlayerAction": {
+      "Options": [ "Back" ],
+      "CorrespondingGameStateIds": [ 1 ]
+    }
+  }
+]

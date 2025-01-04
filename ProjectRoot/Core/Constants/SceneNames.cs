@@ -2,5 +2,5 @@
 
 public class SceneNames
 {
-    public const string Start = "Start";
+    public const string Start = "GameStartScene";
 }

@@ -1,3 +1,10 @@
-﻿namespace Core.Entities;
+﻿using Core.Constants;
 
-public record GameState(long Id, string CurrentContext, PlayerAction PlayerAction);
+namespace Core.Entities;
+
+public record GameState(
+    long Id,
+    string CurrentContext,
+    GameStateType Type,
+    PlayerAction PlayerAction
+    );

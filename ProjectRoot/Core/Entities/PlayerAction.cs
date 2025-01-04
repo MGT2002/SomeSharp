@@ -1,3 +1,3 @@
 ﻿namespace Core.Entities;
 
-public record PlayerAction(int? Choice, string[] Options);
+public record PlayerAction(string[] Options, long[] CorrespondingGameStateIds);

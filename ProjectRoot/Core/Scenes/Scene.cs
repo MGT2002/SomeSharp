@@ -9,6 +9,6 @@ internal abstract class Scene(IServiceProvider serviceProvider)
     public abstract string Name { get; }
 
     public abstract GameState GetCurrentState();
-    public abstract GameState GetNextState(PlayerAction playerAction);
-    public abstract void Initialize();
+    public abstract GameState GetNextState(int playerAction);
+    public abstract Task Initialize(PlayerState playerState, PlayerInventory playerInventory);
 }
