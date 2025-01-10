@@ -2,10 +2,6 @@
   {
     "Id": 1,
     "CurrentContext": "Start of the game",
-    "Type": {
-      "Name": "Dialog",
-      "Value": 1
-    },
     "PlayerAction": {
       "Options": [ "Next" ],
       "CorrespondingGameStateIds": [ 2 ]
@@ -13,10 +9,10 @@
   },
   {
     "Id": 2,
-    "CurrentContext": "2",
+    "CurrentContext": "Remember, there is another way to get what you want—you just need to find it...",
     "Type": {
-      "Name": "Dialog",
-      "Value": 1
+      "Name": "Fight",
+      "Value": 2
     },
     "PlayerAction": {
       "Options": [ "Back" ],

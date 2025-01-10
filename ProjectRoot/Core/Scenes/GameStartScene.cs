@@ -18,10 +18,17 @@ internal class GameStartScene(IServiceProvider serviceProvider) : Scene(serviceP
     public override async Task Initialize(PlayerState playerState, PlayerInventory playerInventory)
     {
         sceneRepository = serviceProvider.GetRequiredService<ISceneRepository>();
-        gameStartScene =  (await sceneRepository.GetScene(Name)).ToDictionary(gs => gs.Id);
+        gameStartScene = await BuildScene();
         currentGameStateId = gameStartScene.Keys.First();
         this.playerState = playerState;
         this.playerInventory = playerInventory;
+    }
+
+    private async Task<Dictionary<long, GameState>> BuildScene()
+    {
+        var gameStates = await sceneRepository.GetScene(Name);
+
+        return gameStates.ToDictionary(gs => gs.Id);
     }
 
     public override GameState GetCurrentState()
