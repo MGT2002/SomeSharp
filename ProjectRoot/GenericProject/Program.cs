@@ -1,72 +1,53 @@
-﻿LFUCache lfu = new LFUCache(2);
-lfu.Put(1, 1);
-lfu.Put(2, 2);
-lfu.Get(1);
-lfu.Put(3, 3);
-lfu.Get(2);
-lfu.Get(3);
-lfu.Put(4, 4);
-lfu.Get(1);
-lfu.Get(3);
-lfu.Get(4);
+﻿using GenericProject;
+using System.Numerics;
 
-public class LFUCache
+//ILRUCache lfu = new LRUCache<BigInteger>(2);
+ILRUCache lfu = new LRUCache<ulong>(10);
+
+string inputString = "[[10,13],[3,17],[6,11],[10,5],[9,10],[13],[2,19],[2],[3],[5,25],[8],[9,22],[5,5],[1,30],[11],[9,12],[7],[5],[8],[9],[4,30],[9,3],[9],[10],[10],[6,14],[3,1],[3],[10,11],[8],[2,14],[1],[5],[4],[11,4],[12,24],[5,18],[13],[7,23],[8],[12],[3,27],[2,12],[5],[2,9],[13,4],[8,18],[1,7],[6],[9,29],[8,21],[5],[6,30],[1,12],[10],[4,15],[7,22],[11,26],[8,17],[9,29],[5],[3,4],[11,30],[12],[4,29],[3],[9],[6],[3,4],[1],[10],[3,29],[10,28],[1,20],[11,13],[3],[3,12],[3,8],[10,9],[3,26],[8],[7],[5],[13,17],[2,27],[11,15],[12],[9,19],[2,15],[3,16],[1],[12,17],[9,1],[6,19],[4],[5],[5],[8,1],[11,7],[5,2],[9,28],[1],[2,2],[7,4],[4,22],[7,24],[9,26],[13,28],[11,26]]";
+
+// Parse the input string using LINQ
+var inputList = inputString
+    .Trim('[', ']') // Remove outer brackets
+    .Split("],[") // Split into individual array strings
+    .Select(item => item
+        .Trim('[', ']') // Remove inner brackets
+        .Split(',', StringSplitOptions.RemoveEmptyEntries) // Split into elements
+        .Select(int.Parse) // Parse each element as integer
+        .ToList()) // Convert to a list
+    .ToList(); // Convert to a list of lists
+
+// Process each array
+foreach (var item in inputList)
 {
-    /// <summary>
-    /// 1. cache: key, value, frequency
-    /// 2. get -> frequency++
-    /// 3. put -> frequency = 1, delete least frequency
-    /// </summary>
-
-    int capacity;
-    int size = 0;
-    // key, value
-    Dictionary<int, int> cache = [];
-    // frequency, keys
-    Dictionary<int, HashSet<int>> frequency = [];
-    // key, DateTime
-    Dictionary<int, DateTime> lastAccessed = [];
-
-    public LFUCache(int capacity)
+    if (item.Count == 2)
     {
-        this.capacity = capacity;
+        lfu.Put(item[0], item[1]);
     }
-
-    public int Get(int key)
+    else if (item.Count == 1)
     {
-        if (!cache.TryGetValue(key, out int value))
-            return -1;
-
-        
-        return value;
+        UseFull.Print = lfu.Get(item[0]);
     }
-
-    public void Put(int key, int value)
+    else
     {
-        if (size == capacity)
-        {
-            if (!cache.TryGetValue(key, out int _))
-            {
-                Evict();
-            }
-        }
-        else
-        {
-            size++;
-        }
-
-        cache[key] = value;
-    }
-
-    private void Evict()
-    {
-        
+        Console.WriteLine($"Invalid entry: [{string.Join(", ", item)}]");
     }
 }
 
-/**
- * Your LFUCache object will be instantiated and called as such:
- * LFUCache obj = new LFUCache(capacity);
- * int param_1 = obj.Get(key);
- * obj.Put(key,value);
- */
+class UseFull
+{
+    static dynamic print;
+    public static dynamic Print
+    {
+        get
+        {
+            Console.WriteLine(print);
+            return print;
+        }
+        set
+        {
+            Console.WriteLine(value);
+            print = value;
+        }
+    }
+}
