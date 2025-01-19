@@ -9,7 +9,7 @@ public class DreamWorldGameManager(IServiceProvider serviceProvider) : IGameMana
 {
     private readonly IServiceProvider serviceProvider = serviceProvider;
     private Scene currentScene = null!;
-    private PlayerState playerState = new("Player", 1, 100);
+    private PlayerState playerState = new("Player", 0, 0, 10);
     private PlayerInventory playerInventory = new([new() { Name = "Hope", Description = "Unique Item" }]);
 
     public GameStateDTO GetCurrentState() => new(currentScene.GetCurrentState(), playerState);

@@ -1,0 +1,29 @@
+{
+  "creatures": [
+    {
+      "Name": "Rat",
+      "Health": 25.5,
+      "Experience": 10
+    },
+    {
+      "Name": "Bug",
+      "Health": 5.0,
+      "Experience": 2
+    },
+    {
+      "Name": "Wolf",
+      "Health": 50.0,
+      "Experience": 30
+    },
+    {
+      "Name": "Dragonfly",
+      "Health": 8.5,
+      "Experience": 5
+    },
+    {
+      "Name": "Spider",
+      "Health": 20.0,
+      "Experience": 15
+    }
+  ]
+}

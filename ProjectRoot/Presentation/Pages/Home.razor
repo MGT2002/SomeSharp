@@ -2,28 +2,33 @@
 @inject IGameManager GameManager
 
 <PageTitle>Home</PageTitle>
-<h1>Hello, world!</h1>
 
-@if(isDataLoaded)
+@if (isDataLoaded)
 {
-    <h2>
-        @GameManager.GetCurrentState().CurrentContext
-    </h2>
-    @foreach (var i in GameManager.GetCurrentState().PlayerActionOptions)
-    {
-        @i
-        <br/>
-    }
+    <GameContainer OnPlayerActionClicked="HandlePlayerAction" PlayerActionOptions="current.PlayerActionOptions">
+        <Context>
+            @current.CurrentContext
+        </Context>
+    </GameContainer>
+}
+else
+{
+    <div class="loading">Loading...</div>
 }
 
-@code
-{
+@code {
     private bool isDataLoaded = false;
+    private GameStateDTO current = default!;
 
     protected override async Task OnInitializedAsync()
     {
         await GameManager.StartNewGame();
-
+        current = GameManager.GetCurrentState();
         isDataLoaded = true;
+    }
+
+    private void HandlePlayerAction(int actionIndex)
+    {
+        current = GameManager.GetNextState(actionIndex);
     }
 }

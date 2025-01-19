@@ -40,21 +40,23 @@ internal class GameStartScene(IServiceProvider serviceProvider) : Scene(serviceP
     {
         var state = gameStartScene[currentGameStateId];
         if (state.Type.Equals(GameStateType.Fight))
-            return Fight(playerAction);
+            return GetFightState(playerAction);
         if(state.Type.Equals(GameStateType.Dialog))
-            return Dialog(playerAction);
+            return GetDialogState(playerAction);
 
         throw new NotImplementedException($"There are no implementation for state type-{state.Type}.");
     }
 
-    private GameState Dialog(int playerAction)
+    private GameState GetDialogState(int playerAction)
     {
         currentGameStateId = gameStartScene[currentGameStateId].PlayerAction.CorrespondingGameStateIds[playerAction];
         return gameStartScene[currentGameStateId];
     }
 
-    private GameState Fight(int playerAction)
+    private GameState GetFightState(int playerAction)
     {
+        var log = gameStartScene[currentGameStateId].Enemies;
+        
         throw new NotImplementedException();
     }
 }

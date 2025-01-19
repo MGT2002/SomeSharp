@@ -23,4 +23,8 @@
     <None Include="wwwroot\Scenes\GameStartScene.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Creatures\" />
+  </ItemGroup>
+
 </Project>

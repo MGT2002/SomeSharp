@@ -10,12 +10,32 @@
   {
     "Id": 2,
     "CurrentContext": "Remember, there is another way to get what you want—you just need to find it...",
+    "PlayerAction": {
+      "Options": [ "Back", "Okay..." ],
+      "CorrespondingGameStateIds": [ 1, 3 ]
+    }
+  },
+  {
+    "Id": 3,
+    "CurrentContext": "Test fight",
     "Type": {
       "Name": "Fight",
       "Value": 2
     },
+    "Enemies": {
+      "rat": 2,
+      "bug": 3
+    },
     "PlayerAction": {
-      "Options": [ "Back" ],
+      "Options": [ "Dead", "Win" ],
+      "CorrespondingGameStateIds": [ 1, 4 ]
+    }
+  },
+  {
+    "Id": 4,
+    "CurrentContext": "Win fight",
+    "PlayerAction": {
+      "Options": [ "Start new game" ],
       "CorrespondingGameStateIds": [ 1 ]
     }
   }

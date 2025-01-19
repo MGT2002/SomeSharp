@@ -1,0 +1,29 @@
+﻿<div class="game-container d-flex flex-column justify-content-center align-items-center vh-100 bg-dark text-light">
+    <div class="game-context mb-4 text-center">
+        <h2>@Context</h2>
+    </div>
+
+    <div class="player-actions d-grid gap-3">
+        @{
+            int counter = 0;
+        }
+        @foreach (var action in PlayerActionOptions)
+        {
+            var index = counter++;
+            <button class="btn btn-primary btn-lg" @onclick="() => OnPlayerActionClicked.InvokeAsync(index)">
+                @action
+            </button>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public RenderFragment Context { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public IEnumerable<string> PlayerActionOptions { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public EventCallback<int> OnPlayerActionClicked { get; set; }
+}

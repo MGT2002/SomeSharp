@@ -6,9 +6,10 @@ public record class GameState(
     long Id,
     string CurrentContext,
     GameStateType Type,
-    PlayerAction PlayerAction
+    PlayerAction PlayerAction,
+    Dictionary<string, int> Enemies
     )
 {
     public GameState() : this(0, string.Empty,
-        GameStateType.Dialog, default!){ }
+        GameStateType.Dialog, default!, []){ }
 }
