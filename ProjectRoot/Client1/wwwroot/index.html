@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client1</title>
+    <base href="/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="Client1.styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <button id="sendMessageButton">Send Message to Parent Window</button>
+    
+    <div id="app">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script>
+        // Listen for the message event
+        window.addEventListener('message', function (event) {
+            // Check the origin for security purposes (in real apps, use a specific origin)
+            console.log('Message received from', event.origin);
+            console.log('Message data:', event.data);
+        });
+
+        // Sending a message to another window (e.g., parent window)
+        document.getElementById('sendMessageButton').addEventListener('click', function () {
+            // Send message to the parent window (or another window)
+            window.postMessage('Hello from the child window!', '*', []);
+        });
+    </script>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+
+</html>
