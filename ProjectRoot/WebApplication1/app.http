@@ -3,3 +3,7 @@ GET https://localhost:7171
 ###
 @num = 1233
 GET https://localhost:7171/square/{{num}}
+###
+@id = "ID33"
+@id = "ID33668787876"
+GET https://localhost:7171/idcheck/{{id}}
