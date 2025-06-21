@@ -49,15 +49,22 @@ class Super : IParsable<Super>, ISuper
         provider.Log("Provider->");
 
         result = new Super() { Code = s ?? "" };
-        //if (Validator.TryValidateProperty(result.Code, new(result) {MemberName=nameof(Code) }, null))
-        if (Validator.TryValidateObject(result, new(result), null, true))
-        {             
-            return true;        
+        List<ValidationResult> validationResults = new();
+
+        if (Validator.TryValidateObject(result, new(result), validationResults, true))
+        {
+            return true;
         }
 
         "Error Binding".Log();
         Create().Code.Log("NewVersion->");
         CreateOld().Code.Log("OldVersion->");
+
+        foreach (var validationResult in validationResults)
+        {
+            Console.WriteLine(validationResult.ErrorMessage);
+        }
+        
         return false;
     }
 
