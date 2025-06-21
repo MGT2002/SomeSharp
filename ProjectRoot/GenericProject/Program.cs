@@ -1,53 +1,95 @@
-﻿using GenericProject;
-using System.Numerics;
+﻿//var r = new Solution().MergeKLists([
+//    new(1, new(4, new(5))),
+//    new(1, new(3, new(4))),
+//    new(2, new(6))
+//    ]);
 
-//ILRUCache lfu = new LRUCache<BigInteger>(2);
-ILRUCache lfu = new LRUCache<ulong>(10);
+using GenericProject;
 
-string inputString = "[[10,13],[3,17],[6,11],[10,5],[9,10],[13],[2,19],[2],[3],[5,25],[8],[9,22],[5,5],[1,30],[11],[9,12],[7],[5],[8],[9],[4,30],[9,3],[9],[10],[10],[6,14],[3,1],[3],[10,11],[8],[2,14],[1],[5],[4],[11,4],[12,24],[5,18],[13],[7,23],[8],[12],[3,27],[2,12],[5],[2,9],[13,4],[8,18],[1,7],[6],[9,29],[8,21],[5],[6,30],[1,12],[10],[4,15],[7,22],[11,26],[8,17],[9,29],[5],[3,4],[11,30],[12],[4,29],[3],[9],[6],[3,4],[1],[10],[3,29],[10,28],[1,20],[11,13],[3],[3,12],[3,8],[10,9],[3,26],[8],[7],[5],[13,17],[2,27],[11,15],[12],[9,19],[2,15],[3,16],[1],[12,17],[9,1],[6,19],[4],[5],[5],[8,1],[11,7],[5,2],[9,28],[1],[2,2],[7,4],[4,22],[7,24],[9,26],[13,28],[11,26]]";
+var r = new Solution().MergeKLists(ListNodeParser.ParseToLinkedLists(
+    "[[1,3,4,6,8,9,12],[1,2,5,7,11,21,24],[-4,0,4,7,10,14,22,29]]"
+    ));
 
-// Parse the input string using LINQ
-var inputList = inputString
-    .Trim('[', ']') // Remove outer brackets
-    .Split("],[") // Split into individual array strings
-    .Select(item => item
-        .Trim('[', ']') // Remove inner brackets
-        .Split(',', StringSplitOptions.RemoveEmptyEntries) // Split into elements
-        .Select(int.Parse) // Parse each element as integer
-        .ToList()) // Convert to a list
-    .ToList(); // Convert to a list of lists
+Console.WriteLine(r);
 
-// Process each array
-foreach (var item in inputList)
+public class ListNode
 {
-    if (item.Count == 2)
+    public int val;
+    public ListNode next;
+    public ListNode(int val = 0, ListNode next = null)
     {
-        lfu.Put(item[0], item[1]);
+        this.val = val;
+        this.next = next;
     }
-    else if (item.Count == 1)
+
+    // Optional: for easy printing
+    public override string ToString()
     {
-        UseFull.Print = lfu.Get(item[0]);
-    }
-    else
-    {
-        Console.WriteLine($"Invalid entry: [{string.Join(", ", item)}]");
+        List<int> values = new();
+        ListNode current = this;
+        while (current != null)
+        {
+            values.Add(current.val);
+            current = current.next;
+        }
+        return string.Join(",", values);
     }
 }
 
-class UseFull
+public class Solution
 {
-    static dynamic print;
-    public static dynamic Print
+    public ListNode MergeKLists(ListNode[] lists)
     {
-        get
+        if (lists.Length == 0)
+            return null!;
+        if (lists.Length == 1)
+            return lists[0];
+
+        for (int i = 1; i < lists.Length; i++)
         {
-            Console.WriteLine(print);
-            return print;
+            Merge(ref lists[0], lists[i]);
         }
-        set
+
+        return lists[0];
+    }
+
+    private void Merge(ref ListNode a, ListNode b)
+    {
+        if (a is null)
+        { 
+            a = b;
+            return;
+        }
+        if (b is null)
         {
-            Console.WriteLine(value);
-            print = value;
+            return;
         }
+        if (a.val > b.val)
+        {
+            var t = a;
+            a = b;
+            b = t;
+        }
+
+        var head = a;
+        while (true)
+        {
+            if (a.next is null)
+            {
+                a.next = b;
+                break;
+            }
+
+            if (a.next.val > b.val)
+            {
+                var t = a.next;
+                a.next = b;
+                b = t;
+            }
+
+            a = a.next;
+        }
+
+        a = head;
     }
 }
