@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Microsoft.Extensions.Configuration;
+using GenericProject.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,7 @@ builder.Services.AddDbContext<GenericProject.WebApi.Data.AppDbContext>(options =
 builder.Services.AddControllers();
 
 // Add application and infrastructure services
-// builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 // ...register other services...
 
 var app = builder.Build();
@@ -44,3 +45,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

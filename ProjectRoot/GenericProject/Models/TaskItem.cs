@@ -7,5 +7,10 @@ namespace GenericProject.WebApi.Models
         public string? Description { get; set; }
         public bool IsCompleted { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public override string ToString()
+        {
+            return $"TaskItem(Id: {Id}, Title: {Title}, Description: {Description}, IsCompleted: {IsCompleted}, CreatedAt: {CreatedAt})";
+        }
     }
 }
