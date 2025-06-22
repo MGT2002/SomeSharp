@@ -34,6 +34,7 @@ namespace GenericProject.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<TaskItem>> CreateTask(TaskItem task)
         {
+            // Optionally validate new fields here
             var created = await taskService.CreateTaskAsync(task);
             return CreatedAtAction(nameof(GetTask), new { id = created.Id }, created);
         }
@@ -41,8 +42,9 @@ namespace GenericProject.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTask(int id, TaskItem task)
         {
-            var updated = await taskService.UpdateTaskAsync(id, task);
-            if (!updated)
+            // Optionally validate new fields here
+            var result = await taskService.UpdateTaskAsync(id, task);
+            if (!result)
                 return NotFound();
             return NoContent();
         }

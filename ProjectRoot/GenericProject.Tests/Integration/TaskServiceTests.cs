@@ -124,5 +124,44 @@ namespace GenericProject.Tests.Integration
             var result = await service.DeleteTaskAsync(-12345); // unlikely to exist
             Assert.IsFalse(result);
         }
+
+        [TestMethod]
+        public async Task CreateTask_WithOriginalEstimateAndBusinessValue_WorksCorrectly()
+        {
+            var newTask = new TaskItem {
+                Title = "EstimateTest",
+                Description = "Test with estimates",
+                OriginalEstimate = 8,
+                BusinessValue = 13
+            };
+            var created = await service.CreateTaskAsync(newTask);
+            Assert.IsNotNull(created);
+            Assert.AreEqual(8, created.OriginalEstimate);
+            Assert.AreEqual(13, created.BusinessValue);
+
+            var fetched = await service.GetTaskAsync(created.Id);
+            Assert.IsNotNull(fetched);
+            Assert.AreEqual(8, fetched!.OriginalEstimate);
+            Assert.AreEqual(13, fetched.BusinessValue);
+        }
+
+        [TestMethod]
+        public async Task UpdateTask_OriginalEstimateAndBusinessValue_WorksCorrectly()
+        {
+            var task = await service.CreateTaskAsync(new TaskItem {
+                Title = "UpdateEstimate",
+                Description = "Before update",
+                OriginalEstimate = 3,
+                BusinessValue = 5
+            });
+            task.OriginalEstimate = 21;
+            task.BusinessValue = 34;
+            var result = await service.UpdateTaskAsync(task.Id, task);
+            var updated = await service.GetTaskAsync(task.Id);
+            Assert.IsTrue(result);
+            Assert.IsNotNull(updated);
+            Assert.AreEqual(21, updated!.OriginalEstimate);
+            Assert.AreEqual(34, updated.BusinessValue);
+        }
     }
 }
