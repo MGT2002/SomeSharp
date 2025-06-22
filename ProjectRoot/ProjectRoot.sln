@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35431.28
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "GenericProject\WebApi.csproj", "{6AB51F11-5270-4BE3-B6D4-BB800743ADF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericProject.Tests", "GenericProject.Tests\GenericProject.Tests.csproj", "{B5F40C79-B15E-4C1B-900A-0EF7E9EF81B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Tests", "GenericProject.Tests\WebApi.Tests.csproj", "{B5F40C79-B15E-4C1B-900A-0EF7E9EF81B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
