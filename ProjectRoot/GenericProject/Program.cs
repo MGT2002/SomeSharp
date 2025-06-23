@@ -5,17 +5,16 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Microsoft.Extensions.Configuration;
 using GenericProject.WebApi.Services;
+using Microsoft.AspNetCore.Hosting; // <-- Added using directive
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add Serilog
-builder.Host.UseSerilog((context, services, configuration) =>
-{
-    configuration
-        .ReadFrom.Configuration(context.Configuration)
-        .ReadFrom.Services(services)
-        .Enrich.FromLogContext();
-});
+// Add Serilog;
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 // Add EF Core with SQL Server
 builder.Services.AddDbContext<GenericProject.WebApi.Data.AppDbContext>(options =>
@@ -26,12 +25,8 @@ builder.Services.AddControllers();
 
 // Add application and infrastructure services
 builder.Services.AddScoped<ITaskService, TaskService>();
-// ...register other services...
 
 var app = builder.Build();
-
-// Use Serilog request logging
-app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {
@@ -41,6 +36,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
+
+app.MapGet("/", () => "Hello World!");
+app.MapGet("/L", () =>
+ {
+     Log.Information("Log endpoint hit!");
+ });
 
 app.MapControllers();
 
