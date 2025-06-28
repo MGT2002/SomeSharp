@@ -1,0 +1,74 @@
+@page "/tasks"
+@inject WebUi.Services.TaskService TaskService
+@using WebUi.Models
+@using MudBlazor
+
+<PageTitle>Tasks</PageTitle>
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudText Typo="Typo.h4" GutterBottom>Task List</MudText>
+    <MudTable Items="tasks" Hover="true" Bordered="true" Striped="true">
+        <HeaderContent>
+            <MudTh>Id</MudTh>
+            <MudTh>Title</MudTh>
+            <MudTh>Description</MudTh>
+            <MudTh>Is Completed</MudTh>
+            <MudTh>Created At</MudTh>
+            <MudTh>Original Estimate</MudTh>
+            <MudTh>Business Value</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="Title">@context.Title</MudTd>
+            <MudTd DataLabel="Description">@context.Description</MudTd>
+            <MudTd DataLabel="Is Completed">
+                <MudCheckBox T="bool" @bind-Checked="@context.IsCompleted" Disabled="true" />
+            </MudTd>
+            <MudTd DataLabel="Created At">@context.CreatedAt.ToShortDateString()</MudTd>
+            <MudTd DataLabel="Original Estimate">@context.OriginalEstimate</MudTd>
+            <MudTd DataLabel="Business Value">@context.BusinessValue</MudTd>
+            <MudTd>
+                <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="() => DeleteTask(context.Id)">Delete</MudButton>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+    <MudDivider Class="my-4" />
+    <MudText Typo="Typo.h6">Add New Task</MudText>
+    <MudTextField @bind-Value="newTask.Title" Label="Title" Required="true" />
+    <MudTextField @bind-Value="newTask.Description" Label="Description" />
+    <MudTextField @bind-Value="newTask.OriginalEstimate" Label="Original Estimate" type="number" />
+    <MudTextField @bind-Value="newTask.BusinessValue" Label="Business Value" type="number" />
+    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="AddTask">Add Task</MudButton>
+</MudContainer>
+
+@code {
+    private List<TaskItem>? tasks;
+    private TaskItem newTask = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        tasks = await TaskService.GetTasksAsync();
+    }
+
+    private async Task AddTask()
+    {
+        var created = await TaskService.CreateTaskAsync(newTask);
+        if (created != null)
+        {
+            tasks?.Add(created);
+            newTask = new();
+            StateHasChanged();
+        }
+    }
+
+    private async Task DeleteTask(int id)
+    {
+        var result = await TaskService.DeleteTaskAsync(id);
+        if (result && tasks != null)
+        {
+            var t = tasks.FirstOrDefault(x => x.Id == id);
+            if (t != null) tasks.Remove(t);
+            StateHasChanged();
+        }
+    }
+}
