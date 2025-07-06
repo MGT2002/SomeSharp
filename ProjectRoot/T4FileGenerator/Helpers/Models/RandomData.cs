@@ -1,4 +1,4 @@
-﻿namespace GenericProject;
+﻿namespace T4FileGenerator.Helpers.Models;
 
 public static class RandomDataGenerator
 {
