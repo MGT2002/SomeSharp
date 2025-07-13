@@ -1,17 +1,12 @@
-﻿using CodeGen;
+﻿namespace SourceGeneratorInCSharp;
 
-namespace SourceGeneratorInCSharp;
-
-internal class CodeGen
+internal class CodeGenerators
 {
-    [CodeGenMethod]
-    public string Fibonacci(int n)
+    [CodeGen.CodeGenMethod]
+    public string MyGeneratorMethod()
     {
-        if (n is 0 or 1)
-        {
-            return "0";
-        }
+        //Do all calls Here
 
-        return n.ToString();
+        return "//Hello Guys";
     }
 }

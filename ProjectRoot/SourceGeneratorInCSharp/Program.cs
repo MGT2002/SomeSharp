@@ -87,8 +87,8 @@ static string CompileAndRun(
     // Use reflection to invoke method    
 
     var type = assembly.GetType($"{namespaceName}.{className}");
-    var instance = Activator.CreateInstance(type);
-    var method = type.GetMethod(methodName);
+    var instance = Activator.CreateInstance(type!);
+    var method = type!.GetMethod(methodName);
     var output = method!.Invoke(instance, parameters: methodParameters);
 
     return output!.ToString()!;

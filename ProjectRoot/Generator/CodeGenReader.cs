@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using Generator.Helpers;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -17,7 +18,7 @@ public class CodeGenReader : IIncrementalGenerator
     {
         if (!System.Diagnostics.Debugger.IsAttached)
         {
-            //System.Diagnostics.Debugger.Launch();
+            System.Diagnostics.Debugger.Launch();
         }
 
         AddCodeGenAttribute(context);
@@ -39,9 +40,20 @@ public class CodeGenReader : IIncrementalGenerator
 
         context.RegisterSourceOutput(pipeline, static (context, model) =>
         {
-            var sourceText = SourceText.From($$"""
-                //Data man {{model}}
-                """, Encoding.UTF8);
+            //TODO: read from XML
+            string codeGenUser = File.ReadAllText(
+                "D:\\Garik\\MyProjects\\SomeSharp\\ProjectRoot\\SourceGeneratorInCSharp\\CodeGen.cs",
+            Encoding.UTF8);
+
+            string cleanCodeUser = codeGenUser.Replace($"[{CodeGenNameSpace}.{CodeGenMethod}]", "");
+
+            var sourceText = GeneratorHelper.CompileAndRunMethod(
+                code: cleanCodeUser,
+                namespaceName: model.Namespace,
+                className: model.ClassName,
+                methodName: model.MethodName,
+                null
+                );
 
             context.AddSource($"CodeGen_{model.MethodName}.g.cs", sourceText);
         });
@@ -52,11 +64,9 @@ public class CodeGenReader : IIncrementalGenerator
     private static void AddViaUserClass(IncrementalGeneratorInitializationContext context)
     {
         //TODO: read from XML
-#pragma warning disable RS1035 // Do not use APIs banned for analyzers
         string codeGenUser = File.ReadAllText(
             "D:\\Garik\\MyProjects\\SomeSharp\\ProjectRoot\\SourceGeneratorInCSharp\\CodeGen.cs",
         Encoding.UTF8);
-#pragma warning restore RS1035 // Do not use APIs banned for analyzers
 
     context.RegisterPostInitializationOutput(ctx =>
         {
