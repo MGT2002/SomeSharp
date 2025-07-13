@@ -12,6 +12,7 @@ public sealed class ExampleGenerator : IIncrementalGenerator
         context.RegisterPostInitializationOutput(ctx =>
         {
             var sourceText = $$"""
+                using System;
                 namespace Code
                 {
                     public static class Gen

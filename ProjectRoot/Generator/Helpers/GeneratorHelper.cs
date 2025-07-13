@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System;
+using System.Linq;
 using System.IO;
 using System.Reflection;
 
@@ -19,11 +20,12 @@ internal static class GeneratorHelper
         var syntaxTree = CSharpSyntaxTree.ParseText(code);
 
         // Reference necessary assemblies
-        var references = new[]
-        {
-            MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-            //MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location)
-        };
+        // Dynamically resolve all loaded references (for .NET 5/6/7/8)
+        var references = AppDomain.CurrentDomain.GetAssemblies()
+            .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
+            .Select(a => MetadataReference.CreateFromFile(a.Location))
+            .Cast<MetadataReference>()
+            .ToList();
 
         // Create the compilation
         var compilation = CSharpCompilation.Create(
@@ -44,7 +46,7 @@ internal static class GeneratorHelper
                 errors += diagnostic.ToString();
                 Console.WriteLine(diagnostic.ToString());
             }
-            throw new Exception(errors);
+            return "//" + errors;
         }
 
         ms.Seek(0, SeekOrigin.Begin);
