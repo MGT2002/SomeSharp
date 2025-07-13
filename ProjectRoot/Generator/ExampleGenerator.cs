@@ -2,6 +2,8 @@
 using Microsoft.CodeAnalysis.Text;
 using System.Text;
 
+namespace Generator;
+
 [Generator]
 public sealed class ExampleGenerator : IIncrementalGenerator
 {
