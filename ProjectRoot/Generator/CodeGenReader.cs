@@ -3,9 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using System;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using static Generator.Names;
 
@@ -18,7 +16,7 @@ public class CodeGenReader : IIncrementalGenerator
     {
         if (!System.Diagnostics.Debugger.IsAttached)
         {
-            //System.Diagnostics.Debugger.Launch();
+            System.Diagnostics.Debugger.Launch();
         }
 
         AddCodeGenAttribute(context);
@@ -34,16 +32,14 @@ public class CodeGenReader : IIncrementalGenerator
                     // Note: this is a simplified example. You will also need to handle the case where the type is in a global namespace, nested, etc.
                     Namespace: containingClass.ContainingNamespace?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)),
                     ClassName: containingClass.Name,
-                    MethodName: context.TargetSymbol.Name);
+                    MethodName: context.TargetSymbol.Name,
+                    FilePath: context.TargetNode.SyntaxTree.FilePath);
             }
         );
 
         context.RegisterSourceOutput(pipeline, static (context, model) =>
         {
-            //TODO: read from XML
-            string codeGenUser = File.ReadAllText(
-                "D:\\Garik\\MyProjects\\SomeSharp\\ProjectRoot\\SourceGeneratorInCSharp\\CodeGen.cs",
-            Encoding.UTF8);
+            string codeGenUser = File.ReadAllText(model.FilePath, Encoding.UTF8);
 
             string cleanCodeUser = codeGenUser.Replace($"[{CodeGenNameSpace}.{CodeGenMethod}]", "");
 
@@ -52,10 +48,9 @@ public class CodeGenReader : IIncrementalGenerator
                 namespaceName: model.Namespace,
                 className: model.ClassName,
                 methodName: model.MethodName,
-                null
-                );
+                null);
 
-            context.AddSource($"CodeGen_{model.MethodName}.g.cs", sourceText);
+            context.AddSource($"CodeGen_{model.ClassName}_{model.MethodName}.g.cs", sourceText);
         });
 
         AddViaUserClass(context);
@@ -95,6 +90,6 @@ public class CodeGenReader : IIncrementalGenerator
         });
     }
 
-    private record Model(string Namespace, string ClassName, string MethodName);
+    private record Model(string Namespace, string ClassName, string MethodName, string FilePath);
 }
 

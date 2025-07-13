@@ -5,6 +5,19 @@ namespace SourceGeneratorInCSharp;
 internal class CodeGenerators
 {
     [CodeGen.CodeGenMethod]
+    public static string GenerateHelloWorld()
+    {
+        return $$"""
+            namespace CodeGenHello;
+
+            internal class Hello
+            {
+             public const string Hi = "Hello From Generated Code!";
+            }            
+            """;
+    }
+
+    [CodeGen.CodeGenMethod]
     public static string MyGeneratorMethod()
     {
         var consts = Enumerable.Range(0, 10)
