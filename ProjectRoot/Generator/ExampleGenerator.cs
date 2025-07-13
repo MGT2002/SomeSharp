@@ -10,9 +10,9 @@ public sealed class ExampleGenerator : IIncrementalGenerator
         context.RegisterPostInitializationOutput(ctx =>
         {
             var sourceText = $$"""
-                namespace SourceGeneratorInCSharp
+                namespace Code
                 {
-                    public static class HelloWorld
+                    public static class Gen
                     {
                         public static void SayHello()
                         {
