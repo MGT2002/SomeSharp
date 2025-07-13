@@ -4,7 +4,8 @@ This is an experimental project that demonstrates compile-time code generation i
 
 It introduces a custom [CodeGenMethod] attribute that allows you to inject C# source code into your project by simply writing methods that return code as strings.
 
-    ⚠️ Note: This project uses File and Assembly access inside IIncrementalGenerator, which is explicitly discouraged and unsupported by Microsoft. It is not intended for production use, but rather as a proof-of-concept and learning tool.
+![Uploading image.png…]()
+⚠️ Note: This project uses File and Assembly access inside IIncrementalGenerator, which is explicitly discouraged and unsupported by Microsoft. It is not intended for production use, but rather as a proof-of-concept and learning tool.
 
 ✨ What It Does
 
@@ -48,5 +49,3 @@ Console.WriteLine(Generated.Fib86);  // 420196140727489673
 This repo is for exploration and educational purposes only. Using System.IO or reflection APIs inside source generators breaks compatibility and is unsupported.
 
 Use responsibly and do not copy this pattern into production software.
-
-Let me know if you want a badge, code snippet with syntax highlighting, or example directory structure added!
