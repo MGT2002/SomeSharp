@@ -1,4 +1,9 @@
-﻿using System.Linq;
+﻿#pragma warning disable IDE0005 // Using directive is unnecessary.
+// Use explicit usings for Code Gen
+using System;
+using System.Linq;
+using System.Collections.Generic;
+#pragma warning restore IDE0005 // Using directive is unnecessary.
 
 namespace SourceGeneratorInCSharp;
 
@@ -18,18 +23,16 @@ internal class CodeGenerators
     }
 
     [CodeGen.CodeGenMethod]
-    public static string MyGeneratorMethod()
+    public static string FibonacciGen()
     {
-        var consts = Enumerable.Range(0, 10)
+        var consts = Enumerable.Range(0, 100)
         .Select(n => $$"""
-            public class Fib{{n}}{
-                public const int Value = {{Fib(n)}};
-            }
+                public const int Fib{{n}} = {{Fib(n)}};
         """);
         var code = string.Join("\n", consts);
 
         return $$"""
-            namespace SourceGeneratorInCSharp;
+            namespace FibonacciGen;
 
             internal class Generated
             {
@@ -38,12 +41,20 @@ internal class CodeGenerators
             """;
     }
 
+    private static Dictionary<int, int> memo = new();
     public static int Fib(int n)
     {
-        return n switch
+        if (memo.TryGetValue(n, out var res))
+            return res;
+
+        res = n switch
         {
             <= 1 => 1,
             _ => Fib(n - 1) + Fib(n - 2)
         };
+
+        memo[n] = res;
+
+        return res;
     }
 }
