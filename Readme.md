@@ -4,7 +4,8 @@ This is an experimental project that demonstrates compile-time code generation i
 
 It introduces a custom [CodeGenMethod] attribute that allows you to inject C# source code into your project by simply writing methods that return code as strings.
 
-![Uploading image.png…]()
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/18eaaa27-a736-4c0d-9588-d907b757f3fb" />
+
 ⚠️ Note: This project uses File and Assembly access inside IIncrementalGenerator, which is explicitly discouraged and unsupported by Microsoft. It is not intended for production use, but rather as a proof-of-concept and learning tool.
 
 ✨ What It Does
