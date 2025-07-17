@@ -58,11 +58,6 @@ public class CodeGenReader : IIncrementalGenerator
 
     private static void AddViaUserClass(IncrementalGeneratorInitializationContext context)
     {
-        //TODO: read from XML
-        string codeGenUser = File.ReadAllText(
-            "D:\\Garik\\MyProjects\\SomeSharp\\ProjectRoot\\SourceGeneratorInCSharp\\CodeGen.cs",
-        Encoding.UTF8);
-
     context.RegisterPostInitializationOutput(ctx =>
         {
             var sourceText = "//empty";
