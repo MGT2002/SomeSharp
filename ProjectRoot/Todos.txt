@@ -1,0 +1,6 @@
+1. Make it build.
+2. Make the MGT projects Class libraries.
+3. Add config for FileGenerator
+4. Add Create index during create table
+4. Add Alter column
+5. Add Drop column(with index, )
