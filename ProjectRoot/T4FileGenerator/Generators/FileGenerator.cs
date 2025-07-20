@@ -1,94 +1,126 @@
-﻿
+﻿using MGTFileGenerator.Generators.Helpers;
+using MGTFileGenerator.Generators.Models;
+using System.Text;
 using System.Xml.Linq;
-using T4FileGenerator.Generators.Helpers;
 
-namespace T4FileGenerator.Generators;
+namespace MGTFileGenerator.Generators;
 
 public class FileGenerator : IFileGenerator
 {
-    private XDocument? xml;
+    private readonly XDocument? xml;
+    private readonly string? outputDirectory;
 
-    public FileGenerator(string? xmlDocFilePath)
+    public FileGenerator(
+        string? xmlDocFilePath = null,
+        string? outputDirectory = null)
     {
         if (xmlDocFilePath is not null)
         {
             xml = XDocument.Load(xmlDocFilePath);
         }
+
+        this.outputDirectory = outputDirectory;
     }
 
     public void CreateTableFromClass(Type type, string? generatedFilePath = null)
     {
-        var table = TableInfoExtractor.GetTableInfo(type, xml);
+        var tableInfo = TableInfoExtractor.GetTableInfo(type, xml);
 
-        Console.WriteLine(table);
-    }
-}
+        //Console.WriteLine(tableInfo);
 
-/*V1
- using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection;
-   
+        var sql = GenerateCreateTableSql(tableInfo);
 
-    // Helper method to generate CREATE TABLE SQL
-    public static string GenerateCreateTableSql(TableInfo tableInfo)
-    {
-        var sql = $"CREATE TABLE ";
-        
-        if (!string.IsNullOrEmpty(tableInfo.Schema))
+        if (outputDirectory is null)
         {
-            sql += $"[{tableInfo.Schema}].";
+            Console.WriteLine(sql);
+            return;
         }
-        
-        sql += $"[{tableInfo.TableName}] (\n";
 
-        var columnDefinitions = new List<string>();
+        File.WriteAllText(GetCreateTablePath(fileName: tableInfo.Schema + tableInfo.TableName), sql);
+    }
 
-        foreach (var column in tableInfo.Columns)
+    public static string GenerateCreateTableSql(TableInfo table)
+    {
+        var tableName = table.TableName;
+        var schema = table.Schema;
+        var columns = table.Columns;
+
+        var lines = new List<string>();
+        var primaryKeys = new List<string>();
+        var foreignKeys = new List<(string name, ForeignKeyInfo info)>();
+
+        foreach (var column in columns)
         {
-            var columnDef = $"    [{column.ColumnName}] {column.SqlType}";
-            
-            if (!column.IsNullable)
-            {
-                columnDef += " NOT NULL";
-            }
+            string line = $"[{column.ColumnName}] {column.SqlType}";
+
+            line += column.IsNullable ? " NULL" : " NOT NULL";
+
 
             if (column.IsPrimaryKey)
+                primaryKeys.Add(column.ColumnName);
+
+            if (column.IsForeignKey)
             {
-                columnDef += " IDENTITY(1,1) PRIMARY KEY";
+                foreignKeys.Add((name: column.ColumnName, info: column.ForeignKeyInfo!));
             }
 
-            columnDefinitions.Add(columnDef);
+            line += ", ";
+            if (!string.IsNullOrWhiteSpace(column.Comment))
+                line += $" -- {column.Comment}";
+            lines.Add(line);
         }
 
-        sql += string.Join(",\n", columnDefinitions);
-        sql += "\n);";
+        string fullTableName = $"[{schema}].[{tableName}]";
+        string body = string.Join("\n\t", lines);
+        string createTableSql = $"CREATE TABLE {fullTableName} (\n    {body}\n);";
 
-        return sql;
+        string primaryKeysSql = GeneratePrimaryKeySql(primaryKeys, schema, tableName);
+        string foreignKeysSql = GenerateForeignKeySql(foreignKeys, schema, tableName);
+
+        return $"""
+            {createTableSql}
+
+            {primaryKeysSql}
+
+            {foreignKeysSql}
+            """;
     }
-}
 
-// Usage example:
-public class Example
-{
-    public static void Main()
+    public static string GenerateForeignKeySql(
+     List<(string name, ForeignKeyInfo info)> foreignKeys,
+     string schema,
+     string tableName)
     {
-        // Extract table info from your BaseModel class
-        var tableInfo = TableInfoExtractor.GetTableInfo<BaseModel>();
-        
-        Console.WriteLine($"Table: {tableInfo.Schema}.{tableInfo.TableName}");
-        Console.WriteLine("Columns:");
-        
-        foreach (var column in tableInfo.Columns)
+        var sb = new StringBuilder();
+
+        foreach (var fk in foreignKeys)
         {
-            Console.WriteLine($"  {column.ColumnName} ({column.PropertyType.Name}) -> {column.SqlType}");
+            string constraintName = $"FK_{schema}_{tableName}_{fk.name}";
+            sb.AppendLine($@"
+ALTER TABLE [{schema}].[{tableName}]
+ADD CONSTRAINT [{constraintName}]
+FOREIGN KEY ([{fk.name}])
+REFERENCES [{fk.info.ReferenceSchema}].[{fk.info.ReferenceTable}]([{fk.info.ReferenceColumn}]);");
         }
-        
-        // Generate CREATE TABLE SQL
-        var createTableSql = TableInfoExtractor.GenerateCreateTableSql(tableInfo);
-        Console.WriteLine("\nGenerated SQL:");
-        Console.WriteLine(createTableSql);
+
+        return sb.ToString().Trim();
     }
+
+
+    public static string GeneratePrimaryKeySql(List<string> primaryKeys, string schema, string tableName)
+    {
+        if (primaryKeys.Count == 0)
+            return string.Empty;
+
+        string constraintName = $"PK_{schema}_{tableName}";
+        string columnList = string.Join(", ", primaryKeys.Select(col => $"[{col}]"));
+
+        return $"ALTER TABLE [{schema}].[{tableName}] ADD CONSTRAINT [{constraintName}] " +
+            $"PRIMARY KEY ({columnList});";
+    }
+
+
+    private string GetCreateTablePath(string fileName, string start = "CreateTable_", string fileExtension = ".sql") =>
+        Path.Combine(outputDirectory ?? throw new NullReferenceException("output directory is not provided!"),
+            start + fileName + fileExtension);
 }
- */

@@ -9,7 +9,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MainProject\MainProject.csproj" />
-    <ProjectReference Include="..\T4FileGenerator\T4FileGenerator.csproj" />
+    <ProjectReference Include="..\T4FileGenerator\MGTFileGenerator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Output\" />
   </ItemGroup>
 
 </Project>

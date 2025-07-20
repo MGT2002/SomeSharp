@@ -1,4 +1,4 @@
-﻿namespace T4FileGenerator.Generators;
+﻿namespace MGTFileGenerator.Generators;
 
 public interface IFileGenerator
 {

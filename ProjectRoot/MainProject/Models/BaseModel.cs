@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using MGTFileGenerator.Shared.Attributes;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MainProject.Models;
 
@@ -8,7 +10,7 @@ internal class BaseModel
     /// <summary>
     /// Id of table
     /// </summary>
-    [Column]
+    [Column, Key]
     public long Id { get; set; } = default!;
 
     /// <summary>
@@ -28,4 +30,10 @@ internal class BaseModel
     /// </summary>
     [Column(TypeName = "Date")]
     public DateOnly CreatedDate { get; set; } = default!;
+
+    /// <summary>
+    /// Foregin key to user
+    /// </summary>
+    [Column(TypeName = "BIGINT"), ForeignKeyExtended("ASD", "User", "Id")]
+    public long CreatedUserId { get; set; } = default!;
 }

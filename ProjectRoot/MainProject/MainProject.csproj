@@ -12,5 +12,9 @@
 		<InternalsVisibleTo Include="FileGenForMyProject" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\MGTFileGenerator.Shared\MGTFileGenerator.Shared.csproj" />
+	</ItemGroup>
+
 
 </Project>

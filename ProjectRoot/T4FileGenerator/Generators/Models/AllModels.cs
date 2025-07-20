@@ -1,4 +1,4 @@
-﻿namespace T4FileGenerator.Generators.Models;
+﻿namespace MGTFileGenerator.Generators.Models;
 
 public class TableInfo
 {
@@ -27,6 +27,7 @@ public class ColumnInfo
     public bool IsNullable { get; set; } = default!;
     public bool IsPrimaryKey { get; set; } = default!;
     public bool IsForeignKey { get; set; } = default!;
+    public ForeignKeyInfo? ForeignKeyInfo { get; set; }
     public string? Comment { get; set; } = default!;
     public string? CustomTypeName { get; set; } = default!; // From TypeName attribute
 
@@ -40,9 +41,16 @@ public class ColumnInfo
             $"\n\tIsNullable: {IsNullable}, " +
             $"\n\tIsPrimaryKey: {IsPrimaryKey}, " +
             $"\n\tIsForeignKey: {IsForeignKey}, " +
+            $"\n\tForeignKeyInfo: {ForeignKeyInfo}, " +
             $"\n\tComment: {Comment ?? "Null"}, " +
             $"\n\tCustomTypeName: {CustomTypeName ?? "Null"}" +
             $"\n\t}}\n";
     }
 
 }
+
+public record ForeignKeyInfo(
+    string ReferenceTable,
+    string ReferenceColumn,
+    string ReferenceSchema
+);
